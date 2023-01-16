@@ -10,18 +10,20 @@ export class UserService {
 
   async findOneById(userId: number): Promise<User | null> {
     const user = await this.userRepository.findOneById(userId);
-    if(!user) {
+    if (!user) {
       throw new Error("User with the provided user id was not found.");
     }
     return user;
   }
 
   async create(user: Partial<User>): Promise<User> {
-    if(!user.emailAddress || !user.password) {
+    if (!user.emailAddress || !user.password) {
       throw new Error("User's email address or password was not provided.");
     }
 
-    const existingUser = await this.userRepository.findOneByEmailAddress(user.emailAddress);
+    const existingUser = await this.userRepository.findOneByEmailAddress(
+      user.emailAddress
+    );
 
     if (existingUser) {
       throw new Error("User with provided email address already exists.");
