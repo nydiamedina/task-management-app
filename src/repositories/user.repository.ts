@@ -21,11 +21,11 @@ export class UserRepository {
     return await this.repository.findOneBy({ emailAddress });
   }
 
-  async create(user: User): Promise<User> {
+  async create(user: Partial<User>): Promise<User> {
     return await this.repository.save(user);
   }
 
-  async update(userId: number, user: User): Promise<void> {
+  async update(userId: number, user: Partial<User>): Promise<void> {
     await this.repository.update(userId, user);
   }
 

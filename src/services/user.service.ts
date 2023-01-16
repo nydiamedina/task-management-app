@@ -8,15 +8,15 @@ export class UserService {
     return await this.userRepository.findAll();
   }
 
-  async findOnebyId(userId: number): Promise<User | null> {
+  async findOneById(userId: number): Promise<User | null> {
     return await this.userRepository.findOneById(userId);
   }
 
-  async findOnebyEmailAddress(emailAddress: string): Promise<User | null> {
+  async findOneByEmailAddress(emailAddress: string): Promise<User | null> {
     return await this.userRepository.findOneByEmailAddress(emailAddress);
   }
 
-  async create(user: User): Promise<User> {
+  async create(user: Partial<User>): Promise<User> {
     if(!user.emailAddress || !user.password) {
       throw new Error("User's email address or password was not provided.");
     }
@@ -29,7 +29,7 @@ export class UserService {
     return await this.userRepository.create(user);
   }
 
-  async update(userId: number, user: User): Promise<User> {
+  async update(userId: number, user: Partial<User>): Promise<User> {
     const userToUpdate = await this.userRepository.findOneById(userId);
     if (!userToUpdate) {
       throw new Error("User not found.");
