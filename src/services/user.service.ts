@@ -9,11 +9,19 @@ export class UserService {
   }
 
   async findOneById(userId: number): Promise<User | null> {
-    return await this.userRepository.findOneById(userId);
+    const user = await this.userRepository.findOneById(userId);
+    if(!user) {
+      throw new Error("User with the provided user id was not found.");
+    }
+    return user;
   }
 
   async findOneByEmailAddress(emailAddress: string): Promise<User | null> {
-    return await this.userRepository.findOneByEmailAddress(emailAddress);
+    const user = await this.userRepository.findOneByEmailAddress(emailAddress);
+    if(!user) {
+      throw new Error("User with the provided email address was not found.");
+    }
+    return user;
   }
 
   async create(user: Partial<User>): Promise<User> {
@@ -40,7 +48,7 @@ export class UserService {
   async delete(userId: number): Promise<void> {
     const user = await this.userRepository.findOneById(userId);
     if (!user) {
-      throw new Error("User not found.");
+      throw new Error("User with the provided user id was not found.");
     }
     await this.userRepository.delete(userId);
   }
