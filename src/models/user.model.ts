@@ -13,10 +13,10 @@ export class User {
   @PrimaryGeneratedColumn({ name: "user_id" })
   userId!: number;
 
-  @Column({ name: "email_address" })
+  @Column({ name: "email_address", unique: true, nullable: false })
   emailAddress!: string;
 
-  @Column()
+  @Column({ nullable: false })
   password!: string;
 
   @Column({ name: "first_name" })
@@ -25,10 +25,10 @@ export class User {
   @Column({ name: "last_name" })
   lastName!: string;
 
-  @CreateDateColumn({ name: "created_at" })
+  @CreateDateColumn({ name: "created_at", nullable: false })
   createdAt!: Date;
 
-  @UpdateDateColumn({ name: "updated_at" })
+  @UpdateDateColumn({ name: "updated_at", nullable: false })
   updatedAt!: Date;
 
   @OneToMany((type) => Task, (task) => task.user)

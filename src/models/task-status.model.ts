@@ -11,12 +11,12 @@ export class TaskStatus {
   @PrimaryGeneratedColumn({ name: "task_status_id" })
   taskStatusId!: number;
 
-  @Column()
+  @Column({ unique: true, nullable: false })
   name!: string;
 
-  @CreateDateColumn({ name: "created_at" })
+  @CreateDateColumn({ name: "created_at", nullable: false })
   createdAt!: Date;
 
-  @UpdateDateColumn({ name: "updated_at" })
+  @UpdateDateColumn({ name: "updated_at", nullable: false })
   updatedAt!: Date;
 }

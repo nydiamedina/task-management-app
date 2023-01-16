@@ -20,7 +20,7 @@ export class Task {
   @JoinColumn({ name: "user_id" })
   user!: User;
 
-  @Column()
+  @Column({ nullable: false })
   title!: string;
 
   @Column()
