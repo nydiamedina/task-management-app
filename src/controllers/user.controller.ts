@@ -11,7 +11,7 @@ export class UserController {
 
   async getUsers(req: Request, res: Response) {
     const users = await this.userService.findAll();
-    res.json(users);
+    res.status(200).json(users);
   }
 
   async getUserById(req: Request, res: Response) {
@@ -25,9 +25,9 @@ export class UserController {
   }
 
   async getUserByEmailAddress(req: Request, res: Response) {
-    const { userId } = req.params;
+    const { emailAddress } = req.params;
     try {
-      const user = await this.userService.findOneByEmailAddress(userId);
+      const user = await this.userService.findOneByEmailAddress(emailAddress);
       res.status(200).json(user);
     } catch (err) {
       res.status(400).json({ message: `Invalid request. Error: ${err}` });
