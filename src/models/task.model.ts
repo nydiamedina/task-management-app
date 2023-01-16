@@ -28,7 +28,7 @@ export class Task {
 
   @OneToOne((type) => TaskStatus)
   @JoinColumn({ name: "task_status_id" })
-  taskStatusId!: TaskStatus;
+  taskStatus!: TaskStatus;
 
   @CreateDateColumn({ name: "created_at" })
   createdAt!: Date;
