@@ -31,6 +31,6 @@ export class User {
   @UpdateDateColumn({ name: "updated_at", nullable: false })
   updatedAt!: Date;
 
-  @OneToMany((type) => Task, (task) => task.user)
+  @OneToMany(() => Task, (task) => task.user)
   tasks!: Task[];
 }

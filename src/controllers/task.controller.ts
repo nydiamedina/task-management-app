@@ -3,8 +3,9 @@ import { container } from "../container";
 
 export class TaskController {
   async getTasks(req: Request, res: Response) {
+    const { userId } = req.query; 
     const taskService = container.getService("taskService");
-    const tasks = await taskService.findAll();
+    const tasks = await taskService.findAll(userId);
     res.status(200).json(tasks);
   }
 
@@ -21,13 +22,14 @@ export class TaskController {
 
   async createTask(req: Request, res: Response) {
     const { title, description, taskStatus } = req.body;
+    const { userId } = req.query; 
     try {
       const taskService = container.getService("taskService");
       const task = await taskService.create({
         title,
         description,
         taskStatus,
-      });
+      }, userId);
       res.status(201).json(task);
     } catch (err) {
       res.status(400).json({ message: `Invalid request. ${err}` });
@@ -37,13 +39,14 @@ export class TaskController {
   async updateTask(req: Request, res: Response) {
     const { taskId } = req.params;
     const { title, description, taskStatus } = req.body;
+    const { userId } = req.query; 
     try {
       const taskService = container.getService("taskService");
       const task = await taskService.update(parseInt(taskId), {
         title,
         description,
         taskStatus,
-      });
+      }, userId);
       res.status(200).json(task);
     } catch (err) {
       res.status(400).json({ message: `Invalid request. ${err}` });

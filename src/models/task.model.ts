@@ -16,7 +16,7 @@ export class Task {
   @PrimaryGeneratedColumn({ name: "task_id" })
   taskId!: number;
 
-  @ManyToOne((type) => User, (user) => user.tasks)
+  @ManyToOne(() => User, (user) => user.tasks)
   @JoinColumn({ name: "user_id" })
   user!: User;
 
@@ -26,7 +26,7 @@ export class Task {
   @Column()
   description!: string;
 
-  @OneToOne((type) => TaskStatus)
+  @OneToOne(() => TaskStatus)
   @JoinColumn({ name: "task_status_id" })
   taskStatus!: TaskStatus;
 

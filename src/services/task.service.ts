@@ -58,7 +58,7 @@ export class TaskService {
     task: Partial<TaskBusinessModel>,
     userId: number
   ): Promise<TaskBusinessModel> {
-    let taskToUpdate = await this.taskRepository.findOneById(taskId);
+    const taskToUpdate = await this.taskRepository.findOneById(taskId);
     if (!taskToUpdate) {
       throw new Error("Task not found.");
     }
