@@ -3,7 +3,7 @@ import { DataSource } from "typeorm";
 
 dotenv.config();
 
-const AppDataSource = new DataSource({
+export const AppDataSource = new DataSource({
   type: "mysql",
   host: "localhost",
   port: 3306,
@@ -17,10 +17,8 @@ const AppDataSource = new DataSource({
 
 AppDataSource.initialize()
   .then(() => {
-    console.log("Database connection has been initialized!");
+    console.log("Data Source has been initialized!");
   })
   .catch((err) => {
-    console.error(`Error during database initialization. Error: ${err}`);
+    console.error(`Error during Data Source initialization. Error:`, { err });
   });
-
-export default AppDataSource;
