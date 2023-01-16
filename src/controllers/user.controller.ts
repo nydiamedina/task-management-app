@@ -1,43 +1,29 @@
 import { Request, Response } from "express";
-import { Container } from "../container";
-import { UserService } from "../services/user.service";
+import { container } from "../container";
 
 export class UserController {
-  private userService: UserService;
-
-  constructor(container: Container) {
-    this.userService = container.getService("userService");
-  }
-
   async getUsers(req: Request, res: Response) {
-    const users = await this.userService.findAll();
+    const userService = container.getService("userService");
+    const users = await userService.findAll();
     res.status(200).json(users);
   }
 
   async getUserById(req: Request, res: Response) {
     const { userId } = req.params;
     try {
-      const user = await this.userService.findOneById(parseInt(userId));
+      const userService = container.getService("userService");
+      const user = await userService.findOneById(parseInt(userId));
       res.status(200).json(user);
     } catch (err) {
-      res.status(400).json({ message: `Invalid request. Error: ${err}` });
-    }
-  }
-
-  async getUserByEmailAddress(req: Request, res: Response) {
-    const { emailAddress } = req.params;
-    try {
-      const user = await this.userService.findOneByEmailAddress(emailAddress);
-      res.status(200).json(user);
-    } catch (err) {
-      res.status(400).json({ message: `Invalid request. Error: ${err}` });
+      res.status(400).json({ message: `Invalid request. ${err}` });
     }
   }
 
   async createUser(req: Request, res: Response) {
     const { emailAddress, password, firstName, lastName } = req.body;
     try {
-      const user = await this.userService.create({
+      const userService = container.getService("userService");
+      const user = await userService.create({
         emailAddress,
         password,
         firstName,
@@ -45,33 +31,34 @@ export class UserController {
       });
       res.status(201).json(user);
     } catch (err) {
-      res.status(400).json({ message: `Invalid request. Error: ${err}` });
+      res.status(400).json({ message: `Invalid request. ${err}` });
     }
   }
 
   async updateUser(req: Request, res: Response) {
     const { userId } = req.params;
-    const { emailAddress, password, firstName, lastName } = req.body;
+    const { password, firstName, lastName } = req.body;
     try {
-      const user = await this.userService.update(parseInt(userId), {
-        emailAddress,
+      const userService = container.getService("userService");
+      const user = await userService.update(parseInt(userId), {
         password,
         firstName,
         lastName,
       });
       res.status(200).json(user);
     } catch (err) {
-      res.status(400).json({ message: `Invalid request. Error: ${err}` });
+      res.status(400).json({ message: `Invalid request. ${err}` });
     }
   }
 
   async deleteUser(req: Request, res: Response) {
     const { userId } = req.params;
     try {
-      await this.userService.delete(parseInt(userId));
+      const userService = container.getService("userService");
+      await userService.delete(parseInt(userId));
       res.status(200).send();
     } catch (err) {
-      res.status(400).json({ message: `Invalid request. Error: ${err}` });
+      res.status(400).json({ message: `Invalid request. ${err}` });
     }
   }
 }

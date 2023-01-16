@@ -16,14 +16,6 @@ export class UserService {
     return user;
   }
 
-  async findOneByEmailAddress(emailAddress: string): Promise<User | null> {
-    const user = await this.userRepository.findOneByEmailAddress(emailAddress);
-    if(!user) {
-      throw new Error("User with the provided email address was not found.");
-    }
-    return user;
-  }
-
   async create(user: Partial<User>): Promise<User> {
     if(!user.emailAddress || !user.password) {
       throw new Error("User's email address or password was not provided.");
