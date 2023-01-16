@@ -1,7 +1,6 @@
 import { Repository } from "typeorm";
 import { AppDataSource } from "../config/database-connection";
 import { Task } from "../models/task.model";
-import { User } from "../models/user.model";
 
 export class TaskRepository {
   private repository: Repository<Task>;
@@ -10,8 +9,8 @@ export class TaskRepository {
     this.repository = AppDataSource.getRepository(Task);
   }
 
-  async findAll(user: User): Promise<Task[]> {
-    return await this.repository.findBy({ user });
+  async findAll(userId: number): Promise<Task[]> {
+    return await this.repository.find({ where: { user: { userId } } });
   }
 
   async findOneById(taskId: number): Promise<Task | null> {
