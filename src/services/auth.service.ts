@@ -5,7 +5,7 @@ import { UserRepository } from "../repositories/user.repository";
 import { User } from "../models/user.model";
 
 dotenv.config();
-const { JWT_PRIVATE_KEY = '' } = process.env;
+const { JWT_PRIVATE_KEY = "" } = process.env;
 
 if (!JWT_PRIVATE_KEY) {
   throw new Error("JWT_PRIVATE_KEY environment variable is not set.");
@@ -13,29 +13,6 @@ if (!JWT_PRIVATE_KEY) {
 
 export class AuthService {
   constructor(private userRepository: UserRepository) {}
-
-  async login(emailAddress: string, password: string): Promise<string> {
-    const user = await this.userRepository.findOneByEmailAddress(emailAddress);
-
-    if (!user) {
-      throw new Error(`User with email address ${emailAddress} was not found.`);
-    }
-
-    const isPasswordMatching = await bcrypt.compare(password, user.password);
-    if (!isPasswordMatching) {
-      throw new Error("Invalid login credentials.");
-    }
-
-    const token = jwt.sign(
-      { userId: user.userId, emailAddress: user.emailAddress },
-      JWT_PRIVATE_KEY,
-      {
-        expiresIn: "1d",
-      }
-    );
-
-    return token;
-  }
 
   async signup(
     emailAddress: string,
@@ -61,7 +38,30 @@ export class AuthService {
     await this.userRepository.create(user);
   }
 
-  async logout(token: string) {
+  async login(emailAddress: string, password: string): Promise<string> {
+    const user = await this.userRepository.findOneByEmailAddress(emailAddress);
+
+    if (!user) {
+      throw new Error(`User with email address ${emailAddress} was not found.`);
+    }
+
+    const isPasswordMatching = await bcrypt.compare(password, user.password);
+    if (!isPasswordMatching) {
+      throw new Error("Invalid login credentials.");
+    }
+
+    const token = jwt.sign(
+      { userId: user.userId, emailAddress: user.emailAddress },
+      JWT_PRIVATE_KEY,
+      {
+        expiresIn: "1d",
+      }
+    );
+
+    return token;
+  }
+
+  async logout(token: string): Promise<void> {
     // TODO: Add functionality to log out user
     // For example, remove token from cache or database
     // or blacklist the token
