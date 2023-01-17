@@ -17,6 +17,7 @@ export class TaskService {
 
   async findOneById(taskId: number): Promise<TaskBusinessModel | null> {
     const task = await this.taskRepository.findOneById(taskId);
+ 
     if (!task) {
       throw new Error("Task with the provided task id was not found.");
     }

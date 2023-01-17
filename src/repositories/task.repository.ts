@@ -10,11 +10,17 @@ export class TaskRepository {
   }
 
   async findAll(userId: number): Promise<Task[]> {
-    return await this.repository.find({ where: { user: { userId } } });
+    return await this.repository.find({
+      where: { user: { userId } },
+      relations: ["user", "taskStatus"],
+    });
   }
 
   async findOneById(taskId: number): Promise<Task | null> {
-    return await this.repository.findOneBy({ taskId });
+    return await this.repository.findOne({
+      where: { taskId },
+      relations: ["user", "taskStatus"],
+    });
   }
 
   async create(task: Partial<Task>): Promise<Task> {
