@@ -1,0 +1,380 @@
+openapi: 3.0.3
+info:
+  title: Task Management API
+  description: |-
+    API documentation for the Task Management App. This is an API used to manage tasks and users.
+    
+    Useful links:
+    - [Task Management API repository](https://github.com/nydiamedina/task-management-app)
+  contact:
+    email: nvmedina29@gmail.com
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:3000'
+    description: Local development server
+tags:
+  - name: Auth
+    description: Endpoints to handle authentication
+  - name: Tasks
+    description: Endpoints to handle task CRUD operations
+  - name: Users
+    description: Endpoints to handle user CRUD operations
+paths:
+  /api/auth/signup:
+    post:
+      tags:
+        - Auth
+      summary: Sign up a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                emailAddress:
+                  type: string
+                  example: example@test.com
+                password:
+                  type: string
+                  example: 12345678
+                firstName:
+                  type: string
+                  example: Test
+                lastName:
+                  type: string
+                  example: User
+      responses:
+        '201':
+          description: User has been created and signed up successfully. 
+        '400':
+          description: Invalid request.
+        '409':
+          description: User already exists.
+  /api/auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Log in a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                emailAddress:
+                  type: string
+                  example: example@test.com
+                password:
+                  type: string
+                  example: 12345678
+      responses:
+        '200':
+          description: User has logged in successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImVtYWlsQWRkcmVzcyI6InRlc3RAc2lnbnVwLmNvbSIsImlhdCI6MTY3Mzk1MjM4MywiZXhwIjoxNjc0MDM4NzgzfQ.kXNiJBUZqkQsWWRsKFGZSAivq05ctTUCh6Awv2mbnoU
+        '400':
+          description: Invalid request.
+        '401':
+          description: Invalid login credentials.
+  /api/auth/logout:
+    post:
+      tags:
+        - Auth
+      summary: Log out a user
+      responses:
+        '204':
+          description: No content.
+        '401':
+          description: Invalid login credentials.
+  /api/tasks:
+    get:
+      tags:
+        - Tasks
+      summary: Retrieve a list of all tasks per user
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Invalid login credentials.
+    post:
+      tags:
+        - Tasks
+      summary: Create a task
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: Test task title
+                description:
+                  type: string
+                  example: Test task description
+                taskStatus:
+                  type: string
+                  enum: [pending, in progress, done]
+      responses:
+        '201':
+          description: Task has been created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '400':
+          description: Invalid request.
+        '401':
+          description: Invalid login credentials.
+  /api/tasks/{taskId}:
+    get:
+      tags:
+        - Tasks
+      summary: Retrieve a task by id
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: taskId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '401':
+          description: Invalid login credentials.
+        '404':
+          description: Task not found.
+    put:
+      tags:
+        - Tasks
+      summary: Update a task by id
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: taskId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '401':
+          description: Invalid login credentials.
+        '404':
+          description: Task not found.
+    delete:
+      tags:
+        - Tasks
+      summary: Delete a task by id
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: taskId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: No content.
+        '401':
+          description: Invalid login credentials.
+        '404':
+          description: Task not found.
+  /api/users:
+    get:
+      tags:
+        - Users
+      summary: Retrieve list of all users in the database
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    post:
+      tags:
+        - Users
+      summary: Create a new user in the database
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: User has been created successfully.
+        '400':
+          description: Invalid request.
+        '409':
+          description: User already exists.
+  /api/users/{userId}:
+    get:
+      tags:
+        - Users
+      summary: Retrieve a user by id
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid request.
+        '404':
+          description: User not found.
+    put:
+      tags:
+        - Users
+      summary: Update a user by id
+      description: Updates a user by their id
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid request.
+        '404':
+          description: User not found.
+    delete:
+      tags:
+        - Users
+      summary: Delete a user by id
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No content.
+        '404':
+          description: User not found.
+components:
+  schemas:
+    Task:
+      type: object
+      properties:
+        taskId:
+          type: integer
+          format: int64
+          example: 1
+        title:
+          type: string
+          example: Test task title
+        description:
+          type: string
+          example: Test task description
+        taskStatus:
+          type: string
+          example: pending
+          enum:
+            - pending
+            - in progress
+            - done
+        createdAt:
+          type: string
+          format: date-time
+          example: 2023-01-15T11:35:57.175Z
+        updatedAt:
+          type: string
+          format: date-time
+          example: 2023-01-15T11:35:57.175Z
+      xml:
+        name: task
+    User:
+      type: object
+      properties:
+        userId:
+          type: integer
+          format: int64
+          example: 1
+        emailAddress:
+          type: string
+          example: example@test.com
+        firstName:
+          type: string
+          example: Test
+        lastName:
+          type: string
+          example: User
+        createdAt:
+          type: string
+          format: date-time
+          example: 2023-01-15T11:35:57.175Z
+        updatedAt:
+          type: string
+          format: date-time
+          example: 2023-01-15T11:35:57.175Z
+      xml:
+        name: task
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
