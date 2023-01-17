@@ -43,6 +43,7 @@ The task management API follows the model-repository-service architecture, and i
 - **controllers**: used to handle the logic of the API, such as validating user input and generating a response to be sent to the client.
 - **middlewares**: functions that are executed before the request reaches the controller and in this case are used to authenticate endpoints.
 - **config**: used to store the database configuration.
+- **docs**: has the Swagger API documentation.
 - **container.ts**: used for dependency injection and to create an instance of all the necessary services for the API to function.
 - **app.ts**: entry point of the API. Used to start up the server and listen for the incoming requests.
 
@@ -59,4 +60,4 @@ The task management API follows the model-repository-service architecture, and i
 
 ## API Documentation
 
-Placeholder
+- [Swagger API documentation](https://github.com/nydiamedina/task-management-app/blob/master/src/docs/task-management-api.yaml)
