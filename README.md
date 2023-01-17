@@ -1,6 +1,6 @@
 # Coding Challenge: Task Management App
 
-A REST API for a task management application using TypeScript, Express.js, TypeORM, and JWT authentication and following the model-repository-service architecture.
+A REST API for a task management application using TypeScript, Express.js, TypeORM, and JWT authentication. It was created following the model-repository-service architecture.
 
 # Challenge Details
 
