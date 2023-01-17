@@ -35,12 +35,16 @@ docker compose up
 ```
 Endpoints may then be interacted with by hitting port 3000 locally.
 
-## Seed the Database
+### Seed the Database
 
 To seed the database with the list of available task status, execute:
 ```docker
 docker-compose exec db sh -c 'exec mysql -uroot -p"$MYSQL_ROOT_PASSWORD" -e "source src/seed/seed.sql"'
 ```
+
+### Authentication
+
+To authenticate, sign up and log in using the corresponding endpoints. Then, use the provided token as Bearer Token in the Task endpoints to be authorized.
 
 ## Code Structure
 
