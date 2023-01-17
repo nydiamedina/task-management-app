@@ -50,7 +50,7 @@ The task management API follows the model-repository-service architecture, and i
 
 - **express**: framework used to build the API in Node.js.
 - **cors**: middleware for Express that allows for handling CORS (Cross-Origin Resource Sharing) headers to enable communication between different domains.
-- **typeorm**: TypeScript ORM (Object-Relational Mapping) for Node.js to interact with MySQL databases.
+- **typeorm**: TypeScript ORM (Object-Relational Mapping) for Node.js to interact with the MySQL database.
 - **mysql2**: library that provides a Node.js driver for communicating with MySQL databases.
 - **jsonwebtoken**: library to create and verify JSON Web Tokens (JWT) for authentication and authorization.
 - **bcryptjs**: library used for hashing and comparing passwords.
