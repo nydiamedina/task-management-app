@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0-oracle
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DATABASE_SCHEMA}
+      MYSQL_USER: ${DATABASE_USERNAME}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD}
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - task_management_network
+
+  api:
+    build:
+      context: .
+    ports:
+      - 3000:3000
+    environment:
+      - SERVER_PORT
+      - DATABASE_USERNAME
+      - DATABASE_PASSWORD
+      - DATABASE_SCHEMA
+      - JWT_PRIVATE_KEY
+      - NODE_ENV
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - task_management_network
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  task_management_network:
+    driver: bridge

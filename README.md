@@ -26,7 +26,14 @@ The API should also have a user authentication system using JSON Web Tokens (JWT
 
 ## Up and Running
 
-Placeholder
+The project has a docker compose file to make development easier. First, make sure Docker is already installed and then run the API by executing:
+```console
+docker compose build
+```
+```console
+docker compose up
+```
+Endpoints may then be interacted with by hitting port 3000 locally.
 
 ## Database
 

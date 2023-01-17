@@ -6,7 +6,7 @@ const baseDir = process.env.NODE_ENV == 'prod' ? 'dist' : 'src';
 
 export const AppDataSource = new DataSource({
   type: "mysql",
-  host: "localhost",
+  host: "db",
   port: 3306,
   username: process.env.DATABASE_USERNAME,
   password: process.env.DATABASE_PASSWORD,
