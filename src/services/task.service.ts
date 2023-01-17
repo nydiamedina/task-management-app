@@ -15,8 +15,17 @@ export class TaskService {
     return tasks.map((task) => new TaskBusinessModel(task));
   }
 
-  async findOneById(taskId: number): Promise<TaskBusinessModel | null> {
+  async findOneById(
+    taskId: number,
+    userId: number
+  ): Promise<TaskBusinessModel | null> {
     const task = await this.taskRepository.findOneById(taskId);
+
+    if (task?.user.userId !== userId) {
+      throw new Error(
+        `User with user ID ${userId} is not authorized to view task.`
+      );
+    }
 
     if (!task) {
       throw new Error(`Task with task ID ${taskId} was not found.`);
@@ -42,7 +51,7 @@ export class TaskService {
     );
     if (!taskStatus) {
       throw new Error(
-        "Task's status provided isn't one of the expected status."
+        "Task's status provided isn't one of the expected task status."
       );
     }
 
@@ -60,6 +69,12 @@ export class TaskService {
     userId: number
   ): Promise<TaskBusinessModel> {
     const taskToUpdate = await this.taskRepository.findOneById(taskId);
+    if (taskToUpdate?.user.userId !== userId) {
+      throw new Error(
+        `User with user ID ${userId} is not authorized to update task.`
+      );
+    }
+
     if (!taskToUpdate) {
       throw new Error(`Task with task ID ${taskId} was not found.`);
     }
@@ -84,7 +99,7 @@ export class TaskService {
 
       if (!taskStatus) {
         throw new Error(
-          "Task's status provided isn't one of the expected status."
+          "Task's status provided isn't one of the expected task status."
         );
       }
 
@@ -95,8 +110,15 @@ export class TaskService {
     return new TaskBusinessModel(taskToUpdate);
   }
 
-  async delete(taskId: number): Promise<void> {
+  async delete(taskId: number, userId: number): Promise<void> {
     const task = await this.taskRepository.findOneById(taskId);
+
+    if (task?.user.userId !== userId) {
+      throw new Error(
+        `User with user ID ${userId} is not authorized to delete task.`
+      );
+    }
+
     if (!task) {
       throw new Error(`Task with task ID ${taskId} was not found.`);
     }
