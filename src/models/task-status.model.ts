@@ -4,7 +4,9 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from "typeorm";
+import { Task } from "./task.model";
 
 @Entity("task_status")
 export class TaskStatus {
@@ -19,4 +21,7 @@ export class TaskStatus {
 
   @UpdateDateColumn({ name: "updated_at", nullable: false })
   updatedAt!: Date;
+
+  @OneToMany(() => Task, (task) => task.taskStatus)
+  tasks!: Task[];
 }

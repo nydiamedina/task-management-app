@@ -26,7 +26,7 @@ export class Task {
   @Column()
   description!: string;
 
-  @OneToOne(() => TaskStatus)
+  @ManyToOne(() => TaskStatus)
   @JoinColumn({ name: "task_status_id" })
   taskStatus!: TaskStatus;
 
