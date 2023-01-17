@@ -19,7 +19,7 @@ export class TaskService {
     const task = await this.taskRepository.findOneById(taskId);
  
     if (!task) {
-      throw new Error("Task with the provided task id was not found.");
+      throw new Error(`Task with task ID ${taskId} was not found.`);
     }
     return new TaskBusinessModel(task);
   }
@@ -61,7 +61,7 @@ export class TaskService {
   ): Promise<TaskBusinessModel> {
     const taskToUpdate = await this.taskRepository.findOneById(taskId);
     if (!taskToUpdate) {
-      throw new Error("Task not found.");
+      throw new Error(`Task with task ID ${taskId} was not found.`);
     }
 
     const user = await this.userRepository.findOneById(userId);
@@ -98,7 +98,7 @@ export class TaskService {
   async delete(taskId: number): Promise<void> {
     const task = await this.taskRepository.findOneById(taskId);
     if (!task) {
-      throw new Error("Task with the provided task id was not found.");
+      throw new Error(`Task with task ID ${taskId} was not found.`);
     }
     await this.taskRepository.delete(taskId);
   }

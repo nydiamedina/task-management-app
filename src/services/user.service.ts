@@ -11,7 +11,7 @@ export class UserService {
   async findOneById(userId: number): Promise<User | null> {
     const user = await this.userRepository.findOneById(userId);
     if (!user) {
-      throw new Error("User with the provided user id was not found.");
+      throw new Error(`User with user ID ${userId} was not found.`);
     }
     return user;
   }
@@ -34,7 +34,7 @@ export class UserService {
   async update(userId: number, user: Partial<User>): Promise<User> {
     const userToUpdate = await this.userRepository.findOneById(userId);
     if (!userToUpdate) {
-      throw new Error("User not found.");
+      throw new Error(`User with user ID ${userId} was not found.`);
     }
     return await this.userRepository.create({ ...userToUpdate, ...user });
   }
@@ -42,7 +42,7 @@ export class UserService {
   async delete(userId: number): Promise<void> {
     const user = await this.userRepository.findOneById(userId);
     if (!user) {
-      throw new Error("User with the provided user id was not found.");
+      throw new Error(`User with user ID ${userId} was not found.`);
     }
     await this.userRepository.delete(userId);
   }
