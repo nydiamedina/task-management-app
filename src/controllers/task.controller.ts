@@ -1,12 +1,20 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
+import { AuthMiddleware } from "../middlewares/auth.middleware";
 import { container } from "../container";
+import { TaskBusinessModel } from "../business-models/task.business.model";
 
 export class TaskController {
-  async getTasks(req: Request, res: Response) {
-    const { userId } = req.query;
-    const taskService = container.getService("taskService");
-    const tasks = await taskService.findAll(userId);
-    res.status(200).json(tasks);
+  async getTasks(req: Request, res: Response): Promise<void> {
+    AuthMiddleware(req, res, () => {
+      const { userId } = req.body;
+      const taskService = container.getService("taskService");
+      taskService
+        .findAll(userId)
+        .then((tasks: TaskBusinessModel[]) => res.status(200).json(tasks))
+        .catch((err: Error) =>
+          res.status(500).json({ message: `An error occurred. ${err}` })
+        );
+    });
   }
 
   async getTaskById(req: Request, res: Response) {

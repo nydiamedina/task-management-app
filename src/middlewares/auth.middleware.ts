@@ -14,13 +14,16 @@ export const AuthMiddleware = (
   res: Response,
   next: NextFunction
 ) => {
-  const token = req.headers?.["x-access-token"];
+  const token =
+    req.headers &&
+    req.headers.authorization &&
+    req.headers.authorization.split(" ")[1];
   if (!token) {
     return res.status(401).json({ message: "No token was provided." });
   }
 
   try {
-    const decoded = jwt.verify(token[0], JWT_PRIVATE_KEY);
+    const decoded = jwt.verify(token, JWT_PRIVATE_KEY);
     if (typeof decoded === "object" && decoded.userId) {
       req.body.userId = decoded.userId;
     }
