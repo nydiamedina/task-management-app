@@ -27,17 +27,20 @@ The API should also have a user authentication system using JSON Web Tokens (JWT
 ## Up and Running
 
 The project has a docker compose file to make development easier. First, make sure Docker is already installed and then run the API by executing:
-```console
+```docker
 docker compose build
 ```
-```console
+```docker
 docker compose up
 ```
 Endpoints may then be interacted with by hitting port 3000 locally.
 
-## Database
+## Seed the Database
 
-Placeholder
+To seed the database with the list of available task status, execute:
+```docker
+docker-compose exec db sh -c 'exec mysql -uroot -p"$MYSQL_ROOT_PASSWORD" -e "source src/seed/seed.sql"'
+```
 
 ## Code Structure
 
