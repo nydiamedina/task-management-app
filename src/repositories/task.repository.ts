@@ -1,5 +1,5 @@
 import { Repository } from "typeorm";
-import { AppDataSource } from "../config/database-connection";
+import { AppDataSource } from "../config/database-connection.config";
 import { Task } from "../models/task.model";
 
 export class TaskRepository {

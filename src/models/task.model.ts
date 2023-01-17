@@ -5,7 +5,6 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
-  OneToOne,
   JoinColumn,
 } from "typeorm";
 import { TaskStatus } from "./task-status.model";
