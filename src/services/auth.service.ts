@@ -5,7 +5,11 @@ import { UserRepository } from "../repositories/user.repository";
 import { User } from "../models/user.model";
 
 dotenv.config();
-const { JWT_SECRET } = process.env;
+const { JWT_PRIVATE_KEY = '' } = process.env;
+
+if (!JWT_PRIVATE_KEY) {
+  throw new Error("JWT_PRIVATE_KEY environment variable is not set.");
+}
 
 export class AuthService {
   constructor(private userRepository: UserRepository) {}
@@ -22,9 +26,13 @@ export class AuthService {
       throw new Error("Invalid login credentials.");
     }
 
-    const token = jwt.sign({ userId: user.userId }, JWT_SECRET, {
-      expiresIn: "1d",
-    });
+    const token = jwt.sign(
+      { userId: user.userId, emailAddress: user.emailAddress },
+      JWT_PRIVATE_KEY,
+      {
+        expiresIn: "1d",
+      }
+    );
 
     return token;
   }
