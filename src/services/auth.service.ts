@@ -53,17 +53,9 @@ export class AuthService {
     await this.userRepository.create(user);
   }
 
-  // async logout(token: string) {
-  //   try {
-  //     const decodedToken = jwt.verify(token, JWT_SECRET);
-  //     const user = await this.userRepository.findOneByUsername(
-  //       decodedToken.username
-  //     );
-  //     user.activeTokens = user.activeTokens.filter((t) => t !== token);
-  //     await this.userRepository.update(user);
-  //     return true;
-  //   } catch (err) {
-  //     return false;
-  //   }
-  // }
+  async logout(token: string) {
+    // TODO: Add functionality to log out user
+    // For example, remove token from cache or database
+    // or blacklist the token
+  }
 }
