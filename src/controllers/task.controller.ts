@@ -82,8 +82,7 @@ export class TaskController {
       const taskService = container.getService("taskService");
       taskService
         .delete(parseInt(taskId), parseInt(userId))
-        .then(() => res.status(200).send())
-
+        .then(() => res.status(204).send())
         .catch((err: Error) =>
           res.status(400).json({ message: `Invalid request. ${err}` })
         );

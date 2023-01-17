@@ -56,7 +56,7 @@ export class UserController {
     try {
       const userService = container.getService("userService");
       await userService.delete(parseInt(userId));
-      res.status(200).send();
+      res.status(204).send();
     } catch (err) {
       res.status(400).json({ message: `Invalid request. ${err}` });
     }
