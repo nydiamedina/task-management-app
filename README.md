@@ -25,16 +25,17 @@ The API should also have a user authentication system using JSON Web Tokens (JWT
 # Development
 
 ## Up and Running
+
 Placeholder
 
 ## Database
+
 Placeholder
 
 ## Code Structure
+
 Placeholder
 
 ## API Documentation
+
 Placeholder
-
-
-
