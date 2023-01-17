@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import { DataSource } from "typeorm";
 
 dotenv.config();
+const baseDir = process.env.NODE_ENV == 'prod' ? 'dist' : 'src';
 
 export const AppDataSource = new DataSource({
   type: "mysql",
@@ -10,7 +11,7 @@ export const AppDataSource = new DataSource({
   username: process.env.DATABASE_USERNAME,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_SCHEMA,
-  entities: ["src/models/*.ts"],
+  entities: [`${baseDir}/models/*.{ts,js}`],
   logging: false,
   synchronize: true,
 });
