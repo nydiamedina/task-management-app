@@ -17,7 +17,7 @@ export class TaskService {
 
   async findOneById(taskId: number): Promise<TaskBusinessModel | null> {
     const task = await this.taskRepository.findOneById(taskId);
- 
+
     if (!task) {
       throw new Error(`Task with task ID ${taskId} was not found.`);
     }
@@ -69,12 +69,12 @@ export class TaskService {
       throw new Error("User provided is invalid.");
     }
 
-    if(task.title) {
-      taskToUpdate.title = task.title
+    if (task.title) {
+      taskToUpdate.title = task.title;
     }
 
-    if(task.description) {
-      taskToUpdate.description = task.description
+    if (task.description) {
+      taskToUpdate.description = task.description;
     }
 
     if (task.taskStatus) {
